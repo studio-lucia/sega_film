@@ -1,0 +1,6 @@
+[package]
+name = "sega_film"
+version = "0.1.0"
+authors = ["Misty De Meo <mistydemeo@gmail.com>"]
+
+[dependencies]
