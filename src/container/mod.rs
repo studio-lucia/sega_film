@@ -11,9 +11,11 @@ fn uint16_from_bytes(bytes : [u8; 2]) -> u16 {
 
 pub struct FILMHeader {
     // Always 'FILM'
+    #[allow(dead_code)]
     signature: String,
     pub length: usize,
     pub version: String,
+    #[allow(dead_code)]
     unknown: Vec<u8>,
     pub fdsc: FDSC,
     pub stab: STAB,
@@ -49,7 +51,9 @@ impl FILMHeader {
 
 pub struct FDSC {
     // Always 'FDSC'
+    #[allow(dead_code)]
     signature: String,
+    #[allow(dead_code)]
     length: u32,
     fourcc: String,
     pub height: u32,
@@ -105,11 +109,14 @@ impl FDSC {
 
 pub struct STAB {
     // Always 'STAB'
+    #[allow(dead_code)]
     signature: String,
+    #[allow(dead_code)]
     length: u32,
     // in Hz
     pub framerate: u32,
     // Number of entries in the sample table
+    #[allow(dead_code)]
     entries: u32,
     pub sample_table: Vec<Sample>,
 }
@@ -141,6 +148,7 @@ pub struct Sample {
     pub offset: usize,
     pub length: usize,
     info1: [u8; 4],
+    #[allow(dead_code)]
     info2: [u8; 4],
 }
 
