@@ -276,4 +276,13 @@ impl Sample {
     pub fn is_audio(&self) -> bool {
         return self.info1 == [255, 255, 255, 255];
     }
+
+    pub fn is_video(&self) -> bool {
+        return !self.is_audio();
+    }
+
+    pub fn is_keyframe(&self) -> bool {
+        let byte = uint32_from_bytes(self.info1);
+        return (byte & (1 << 31)) == 0;
+    }
 }
