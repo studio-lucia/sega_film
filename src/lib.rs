@@ -3,6 +3,7 @@
 //! released between 1994 and 2000; it's the most common of the several video
 //! formats used on the Saturn.
 
+pub mod codec;
 /// Contains tools for parsing the FILM container.
 pub mod container;
 mod utils;
