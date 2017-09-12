@@ -10,7 +10,6 @@ const STRIP_START_OFFSET : usize = 12;
 pub struct Frame {
     pub width: usize,
     pub height: usize,
-    pub strip_count: usize,
     pub keyframe: bool,
     pub strips: Vec<Strip>,
 }
@@ -44,7 +43,6 @@ impl Frame {
             width: uint16_from_bytes([data[6], data[7]]) as usize,
             height: uint16_from_bytes([data[4], data[5]]) as usize,
             keyframe: is_keyframe,
-            strip_count: strip_count,
             strips: strips,
         }
     }
