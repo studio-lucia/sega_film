@@ -15,6 +15,7 @@ use utils::{uint16_from_bytes, uint32_from_bytes};
 /// Since the FILM header is variable size, a method is provided to help you
 /// calculate how many bytes you'll need to read in order to parse the header.
 /// For example:
+///
 /// ```
 /// let file = File::open("myfile.cpk")?;
 /// let mut buf = vec![];
@@ -222,6 +223,7 @@ pub struct Sample {
     /// byte 0 is the first byte after the header ends.
     /// You can use your FILMHeader's `length` to determine that offset.
     /// For example, to extract this sample from the file's data:
+    ///
     /// ```
     /// # assuming a FILMHeader named `header`, and the entire file's contents as `film_data`
     /// let sample = header.stab.sample_table[0];
