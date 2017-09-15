@@ -211,25 +211,27 @@ impl STAB {
 
 /// Represents a single sample in the file.
 /// Each sample within the FILM file is either audio or video; this data from the
-/// sample table will tell you what kind of data is in this sample as well as some
-/// basic metadata about it.
+/// sample table will tell you the location of the sample along with what kind of data it
+/// contains and some basic metadata about it.
 /// For the audio stream, this information and the information in the FDSC is enough to
 /// parse the data after you've demuxed it.
 /// For the video stream, you'll need some additional information from the Cinepak headers
 /// which are contained in every video sample.
+///
+/// The offset in the sample data is relative to the end of the header;
+/// you can use your FILMHeader's `length` to determine that offset.
+/// For example, to extract this sample from the file's data:
+///
+/// ```
+/// # assuming a FILMHeader named `header`, and the entire file's contents as `film_data`
+/// let sample = header.stab.sample_table[0];
+/// let absolute_sample_offset = header.length + sample.offset;
+/// let sample_data = film_data[absolute_sample_offset..absolute_sample_offset + sample.length];
+/// ```
 pub struct Sample {
     /// Offset to the beginning of the sample's data.
     /// This is normally relative to the beginning of the sample data - that is,
     /// byte 0 is the first byte after the header ends.
-    /// You can use your FILMHeader's `length` to determine that offset.
-    /// For example, to extract this sample from the file's data:
-    ///
-    /// ```
-    /// # assuming a FILMHeader named `header`, and the entire file's contents as `film_data`
-    /// let sample = header.stab.sample_table[0];
-    /// let absolute_sample_offset = header.length + sample.offset;
-    /// let sample_data = film_data[absolute_sample_offset..absolute_sample_offset + sample.length];
-    /// ```
     pub offset: usize,
     /// The length of this sample's data, in bytes.
     pub length: usize,
