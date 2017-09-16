@@ -19,19 +19,20 @@ use utils::{uint16_from_bytes, uint32_from_bytes};
 /// ```
 /// let file = File::open("myfile.cpk")?;
 /// let mut buf = vec![];
-/// # Start with only 8 bytes, so we don't waste memory
+/// // Start with only 8 bytes, so we don't waste memory
 /// file.take(8).read(&mut buf)?;
 ///
-/// # Check if it's a FILM file before going any further!
+/// // Check if it's a FILM file before going any further!
 /// if !FILMHeader::is_film_file(&buf) {
 ///     println!("Oh no!");
 ///     exit(1);
 /// }
 ///
-/// # Figure out how large the header is, and read the rest of its contents
+/// // Figure out how large the header is, and read the rest of its contents
 /// let bytes_to_read = FILMHeader::guess_length(&buf);
 /// file.take(bytes_to_read - 8).read(&mut buf)?;
-/// # Now we're ready to parse!
+///
+/// // Now we're ready to parse!
 /// let header = FILMHeader::parse(&buf)?;
 /// ```
 pub struct FILMHeader {
@@ -223,7 +224,7 @@ impl STAB {
 /// For example, to extract this sample from the file's data:
 ///
 /// ```
-/// # assuming a FILMHeader named `header`, and the entire file's contents as `film_data`
+/// // assuming a FILMHeader named `header`, and the entire file's contents as `film_data`
 /// let sample = header.stab.sample_table[0];
 /// let absolute_sample_offset = header.length + sample.offset;
 /// let sample_data = film_data[absolute_sample_offset..absolute_sample_offset + sample.length];
