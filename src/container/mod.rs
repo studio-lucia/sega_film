@@ -35,6 +35,24 @@ use utils::{uint16_from_bytes, uint32_from_bytes};
 /// // Now we're ready to parse!
 /// let header = FILMHeader::parse(&buf)?;
 /// ```
+pub enum AudioCodec {
+    PCM,
+    ADX,
+    Unknown,
+}
+
+impl AudioCodec {
+    pub fn name(&self) -> &'static str {
+        use self::AudioCodec::*;
+
+        match *self {
+            PCM => "pcm",
+            ADX => "adx",
+            Unknown => "unknown"
+        }
+    }
+}
+
 pub struct FILMHeader {
     // Always 'FILM'
     #[allow(dead_code)]
@@ -114,7 +132,7 @@ pub struct FDSC {
     /// The bit depth of the audio stream; in practice this is always either 8 or 16.
     pub audio_resolution: u8,
     /// The type of compression used. 0, the default value, refers to uncompressed PCM, while 2 refers to CRI ADX.
-    pub audio_compression: u8,
+    pub audio_compression: AudioCodec,
     /// The audio stream's sampling rate.
     pub audio_sampling_rate: u16,
 }
@@ -128,6 +146,12 @@ impl FDSC {
         let fourcc_bytes = vec![
             data[8], data[9], data[10], data[11],
         ];
+        let audio_codec;
+        match data[23] {
+            0 => audio_codec = AudioCodec::PCM,
+            2 => audio_codec = AudioCodec::ADX,
+            _ => audio_codec = AudioCodec::Unknown,
+        };
 
         return FDSC {
             signature: String::from_utf8(signature_bytes).unwrap(),
@@ -138,18 +162,14 @@ impl FDSC {
             bpp: data[20],
             channels: data[21],
             audio_resolution: data[22],
-            audio_compression: data[23],
+            audio_compression: audio_codec,
             audio_sampling_rate: uint16_from_bytes([data[24], data[25]]),
         };
     }
 
     /// Returns a string identifying the audio format. Valid return values are "pcm" and "adx".
     pub fn audio_codec(&self) -> &'static str {
-        if self.audio_compression == 0 {
-            return "pcm";
-        } else {
-            return "adx";
-        }
+        return self.audio_compression.name();
     }
 
     /// Parses the fourcc and returns a human-readable description of the video codec.
