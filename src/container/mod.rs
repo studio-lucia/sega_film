@@ -6,6 +6,24 @@
 
 use utils::{uint16_from_bytes, uint32_from_bytes};
 
+pub enum AudioCodec {
+    PCM,
+    ADX,
+    Unknown,
+}
+
+impl AudioCodec {
+    pub fn name(&self) -> &'static str {
+        use self::AudioCodec::*;
+
+        match *self {
+            PCM => "pcm",
+            ADX => "adx",
+            Unknown => "unknown"
+        }
+    }
+}
+
 /// Represents the header of a FILM container.
 /// Parsing a FILMHeader provides all of the information necessary to read
 /// the file, including the data from the sub-chunks.
@@ -35,24 +53,6 @@ use utils::{uint16_from_bytes, uint32_from_bytes};
 /// // Now we're ready to parse!
 /// let header = FILMHeader::parse(&buf)?;
 /// ```
-pub enum AudioCodec {
-    PCM,
-    ADX,
-    Unknown,
-}
-
-impl AudioCodec {
-    pub fn name(&self) -> &'static str {
-        use self::AudioCodec::*;
-
-        match *self {
-            PCM => "pcm",
-            ADX => "adx",
-            Unknown => "unknown"
-        }
-    }
-}
-
 pub struct FILMHeader {
     // Always 'FILM'
     #[allow(dead_code)]
