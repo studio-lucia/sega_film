@@ -6,7 +6,6 @@ description = "Library to parse Sega FILM multimedia container files"
 homepage = "https://github.com/mistydemeo/sega_film"
 repository = "https://github.com/mistydemeo/sega_film.git"
 license = "LGPL-3.0"
-license-file = "LICENSE"
 categories = ["parsing", "parser-implementations", "multimedia"]
 keywords = ["game", "parser", "sega", "cinepak"]
 
